@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizz/model/quizz.dart';
+import 'package:quizz/widgets/game/play/game_score_widget.dart';
 import 'package:quizz/widgets/game/play/game_widget.dart';
 import 'package:quizz/widgets/game/select/game_select_quizz_widget.dart';
 import 'package:quizz/widgets/home_widget.dart';
@@ -19,6 +20,13 @@ class RouteGenerator {
       case '/game/play':
         if(args != null && args.runtimeType == Quizz ) {
           return MaterialPageRoute(builder: (_) => GameWidget(args as Quizz));
+        }
+
+        return _errorRoute();
+
+      case '/game/score':
+        if(args != null && args.runtimeType == int) {
+          return MaterialPageRoute(builder: (_) => GameScoreWidget(args as int));
         }
 
         return _errorRoute();
