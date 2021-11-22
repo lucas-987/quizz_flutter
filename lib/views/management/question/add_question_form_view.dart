@@ -53,16 +53,13 @@ class AddQuestionFormView extends WidgetView<AddQuestionFormWidget, AddQuestionF
               SizedBox(height: 20),
               Text("Answers"),
               SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                child: AddQuestionFormChoicesWidget(
-                    this.state.choicesValue,
-                    this.state.correctChoiceIndex,
-                    this.state.addChoice,
-                    this.state.onChoiceValueChanged,
-                    this.state.deleteChoice,
-                    this.state.onChoiceOrderChanged
-                ),
+              AddQuestionFormChoicesWidget(
+                  this.state.choicesValue,
+                  this.state.correctChoiceIndex,
+                  this.state.addChoice,
+                  this.state.onChoiceValueChanged,
+                  this.state.deleteChoice,
+                  this.state.onChoiceOrderChanged
               ),
               SizedBox(height: 20,),
               ElevatedButton(

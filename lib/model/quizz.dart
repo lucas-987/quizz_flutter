@@ -1,6 +1,8 @@
+import 'package:flutter/widgets.dart';
 import 'package:quizz/model/question.dart';
 
 class Quizz {
+  String id = UniqueKey().toString();
   String? title;
   String? url;
   List<Question> questions = new List.empty();

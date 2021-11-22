@@ -14,20 +14,23 @@ class AddQuestionFormChoicesView extends WidgetView<AddQuestionFormChoicesWidget
     return Column(
       children: [
         SizedBox(
-          height: 400,
+          height: MediaQuery.of(context).size.height * 0.4,
           child: ReorderableListView(
             children: [
               for(var i=0; i<this.widget.choices.length; i++) Dismissible(
                 key: Key("$i"),
                 background: Container(color: Colors.red),
-                child: TextFormField(
-                  controller: TextTools.newTextEditingController(this.widget.choices[i]),
-                  decoration: InputDecoration(
-                      hintText: "Answer ${i+1}",
-                      labelText: "Answer ${i+1}"
+                child: ListTile(
+                  contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  title: TextFormField(
+                    controller: TextTools.newTextEditingController(this.widget.choices[i]),
+                    decoration: InputDecoration(
+                        hintText: "Answer ${i+1}",
+                        labelText: "Answer ${i+1}"
+                    ),
+                    onChanged: (value) => widget.onChoiceValueChanged(i, value),
+                    validator: (value) => this.state.validateChoice(value),
                   ),
-                  onChanged: (value) => widget.onChoiceValueChanged(i, value),
-                  validator: (value) => this.state.validateChoice(value),
                 ),
                 onDismissed: (direction) => widget.onChoiceDismissed(i),
               ),

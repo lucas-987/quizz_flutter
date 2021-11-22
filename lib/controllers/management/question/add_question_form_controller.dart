@@ -85,11 +85,6 @@ class AddQuestionFormController extends State<AddQuestionFormWidget> {
   void onChoiceOrderChanged(int oldIndex, int newIndex) {
     if(oldIndex < choicesValue.length && oldIndex >= 0 && newIndex < choicesValue.length+1 && newIndex >= 0) {
       setState(() {
-        //after end of list
-        /*if(newIndex == choicesValue.length) {
-          newIndex--;
-        }*/
-
         if (oldIndex < newIndex) {
           newIndex -= 1;
         }
@@ -99,6 +94,7 @@ class AddQuestionFormController extends State<AddQuestionFormWidget> {
         choicesValue.insert(newIndex, value);
 
         if(correctChoiceIndex - 1 == oldIndex) correctChoiceIndex = newIndex + 1;
+        else if (newIndex < correctChoiceIndex - 1 && oldIndex > correctChoiceIndex -1) correctChoiceIndex++;
       });
     }
   }

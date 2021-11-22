@@ -24,7 +24,7 @@ class QuizzManagementView extends WidgetView<QuizzManagementWidget, QuizzManagem
           child: ReorderableListView.builder(
             itemBuilder: (context, int index) {
               return Dismissible(
-                key: Key('$index'),
+                key: Key("${allQuizzes.quizzes[index].id}"),
                 onDismissed: (direction) => this.state.onQuizzDismissed(direction, index, allQuizzes),
                 background: Container(color: Colors.red,),
                 child: QuizzManagementItemWidget(allQuizzes.quizzes[index]),

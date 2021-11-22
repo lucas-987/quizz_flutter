@@ -21,10 +21,12 @@ class AllQuizzes with ChangeNotifier {
   Quizz createQuizz(String title) {
     Quizz newQuizz = Quizz(title);
     quizzes.add(newQuizz);
+    notifyListeners();
     return newQuizz;
   }
 
   void addQuestion(Quizz quizz, Question question) {
     quizz.questions.add(question);
+    notifyListeners();
   }
 }
