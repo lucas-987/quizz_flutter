@@ -18,5 +18,13 @@ class AllQuizzes with ChangeNotifier {
     ])
   ];
 
+  Quizz createQuizz(String title) {
+    Quizz newQuizz = Quizz(title);
+    quizzes.add(newQuizz);
+    return newQuizz;
+  }
 
+  void addQuestion(Quizz quizz, Question question) {
+    quizz.questions.add(question);
+  }
 }

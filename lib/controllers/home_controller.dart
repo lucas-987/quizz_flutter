@@ -11,7 +11,7 @@ class HomeController extends State<HomeWidget> {
     Navigator.of(context).pushNamed("/game");
   };
 
-  VoidCallback manageQuizzesButtonPressed = () {
-
-  };
+  void manageQuizzesButtonPressed() {
+    Navigator.of(context).pushNamed("/management");
+  }
 }

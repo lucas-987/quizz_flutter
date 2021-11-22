@@ -22,7 +22,7 @@ class GameSelectQuizzView extends WidgetView<GameSelectQuizzWidget, GameSelectQu
         body: Center(
           child: ListView.separated(
               itemBuilder: (context, int index) => GameSelectQuizzItemWidget(allQuizzes.quizzes[index]),
-              separatorBuilder: (context, int index) => SizedBox(height: 20),
+              separatorBuilder: (context, int index) => SizedBox(height: 0),
               itemCount: allQuizzes.quizzes.length)
         ),
       ),

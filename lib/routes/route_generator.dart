@@ -4,6 +4,9 @@ import 'package:quizz/widgets/game/play/game_score_widget.dart';
 import 'package:quizz/widgets/game/play/game_widget.dart';
 import 'package:quizz/widgets/game/select/game_select_quizz_widget.dart';
 import 'package:quizz/widgets/home_widget.dart';
+import 'package:quizz/widgets/management/question/add_question_form_widget.dart';
+import 'package:quizz/widgets/management/question/question_management_widget.dart';
+import 'package:quizz/widgets/management/quizz/quizz_management_widget.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -27,6 +30,23 @@ class RouteGenerator {
       case '/game/score':
         if(args != null && args.runtimeType == int) {
           return MaterialPageRoute(builder: (_) => GameScoreWidget(args as int));
+        }
+
+        return _errorRoute();
+
+      case '/management':
+        return MaterialPageRoute(builder: (_) => QuizzManagementWidget());
+
+      case '/management/questions':
+        if(args != null && args.runtimeType == Quizz) {
+          return MaterialPageRoute(builder: (_) => QuestionManagementWidget(args as Quizz));
+        }
+
+        return _errorRoute();
+
+      case '/management/questions/add':
+        if(args != null && args.runtimeType == Quizz){
+          return MaterialPageRoute(builder: (_) => AddQuestionFormWidget(args as Quizz));
         }
 
         return _errorRoute();

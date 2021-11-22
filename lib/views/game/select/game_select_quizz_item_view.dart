@@ -9,12 +9,22 @@ class GameSelectQuizzItemView extends WidgetView<GameSelectQuizzItemWidget, Game
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-
-      title: Center(
-        child: Text(state.widget.quizz.title == null ? "no title" : state.widget.quizz.title!),
+    return Card(
+      child: ListTile(
+        enabled: this.widget.quizz.questions.isNotEmpty,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Center(
+              child: Text(state.widget.quizz.title == null ? "no title" : state.widget.quizz.title!)
+            ),
+            Center(
+              child: Text("${state.widget.quizz.questions.length} questions"),
+            )
+          ],
+        ),
+        onTap: () => state.onClicked(context),
       ),
-      onTap: () => state.onClicked(context),
     );
   }
 }
