@@ -12,7 +12,9 @@ class QuizzManagementController extends State<QuizzManagementWidget> {
   Widget build(BuildContext context) => QuizzManagementView(this);
 
   void onQuizzDismissed(direction, int index, AllQuizzes allQuizzes) {
-    allQuizzes.quizzes.removeAt(index);
+    Quizz quizzToDelete = allQuizzes.quizzes[index];
+
+    allQuizzes.deleteQuizz(quizzToDelete);
   }
 
   void onReorder(int oldIndex, int newIndex, AllQuizzes allQuizzes) {
@@ -29,7 +31,7 @@ class QuizzManagementController extends State<QuizzManagementWidget> {
       builder: (context) => showAddQuizzDialog(context)
     );
 
-    dialogResult.then((result) {
+    dialogResult.then((result) async {
       if(result == null || result is! Tuple<String?, String?>) {
         return;
       }
@@ -45,7 +47,7 @@ class QuizzManagementController extends State<QuizzManagementWidget> {
           return;
         }
 
-        createdQuizz = allQuizzes.createQuizz(result.item2!);
+        createdQuizz = await allQuizzes.createQuizz(result.item2!);
       }
       else if(result.item1 == "load") {
         // createQuizz =

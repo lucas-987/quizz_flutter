@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizz/application_state/all_quizzes.dart';
+import 'package:quizz/model/choice.dart';
 import 'package:quizz/model/question.dart';
 import 'package:quizz/views/management/question/add_question_form_view.dart';
 import 'package:quizz/widgets/management/question/add_question_form_widget.dart';
@@ -15,20 +16,26 @@ class AddQuestionFormController extends State<AddQuestionFormWidget> {
   int correctChoiceIndex = 1;
   String? questionSentence = null;
 
-  void validateForm() {
+  void validateForm(AllQuizzes allQuizzes) {
     //if form is valid
     if(formKey.currentState!.validate()) {
+      List<String> choicesValueString = choicesValue.where((choice) => choice != null).cast<String>().toList();
+      List<Choice> choices = choicesValueString.map((value) => Choice(value)).toList();
+
       Question newQuestion = Question.WithOrder(
           questionSentence!,
-          choicesValue.where((choice) => choice != null).cast<String>().toList(),
+          choices,
           choicesValue[correctChoiceIndex]!,
           widget.quizz.questions.length
       );
 
-      widget.quizz.questions.add(newQuestion);
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
-      Navigator.of(context).pushNamed("/management/questions", arguments: widget.quizz);
+      newQuestion.quizzId = widget.quizz.id;
+
+      allQuizzes.addQuestion(widget.quizz, newQuestion).then((value) {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pushNamed("/management/questions", arguments: widget.quizz);
+      });
     }
   }
 
@@ -54,6 +61,19 @@ class AddQuestionFormController extends State<AddQuestionFormWidget> {
     }
 
     return null;
+  }
+
+  void onCorrectAnswerChanged(String? input) {
+    if(input == null || input.isEmpty) return;
+
+    try {
+      int inputInt = int.parse(input);
+      setState(() {
+        correctChoiceIndex = inputInt;
+      });
+    } on FormatException catch(exception) {
+      return;
+    }
   }
 
   void addChoice() {

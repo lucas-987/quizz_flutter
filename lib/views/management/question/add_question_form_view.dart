@@ -14,59 +14,62 @@ class AddQuestionFormView extends WidgetView<AddQuestionFormWidget, AddQuestionF
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Create a question"),
-        centerTitle: true,
-      ),
+    return Consumer<AllQuizzes>(
+      builder: (context, allQuizzes, child) => Scaffold(
+        appBar: AppBar(
+          title: Text("Create a question"),
+          centerTitle: true,
+        ),
 
-      body: Form(
-        key: this.state.formKey,
-        child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      labelText: "Question",
-                      hintText: "The sentence that formulates the question"
+        body: Form(
+          key: this.state.formKey,
+          child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                        labelText: "Question",
+                        hintText: "The sentence that formulates the question"
+                    ),
+                    validator: (String? value) => this.state.validateQuestionSentence(value),
                   ),
-                  validator: (String? value) => this.state.validateQuestionSentence(value),
                 ),
-              ),
-              SizedBox(height: 20),
-              Padding(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-                  ],
-                  controller: TextTools.newTextEditingController("${this.state.correctChoiceIndex}"),
-                  decoration: const InputDecoration(
-                    labelText: "Correct answer",
-                    hintText: "The number of the correct answer",
+                SizedBox(height: 20),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                    ],
+                    controller: TextTools.newTextEditingController("${this.state.correctChoiceIndex}"),
+                    decoration: const InputDecoration(
+                      labelText: "Correct answer",
+                      hintText: "The number of the correct answer",
+                    ),
+                    onChanged: (String? input) => this.state.onCorrectAnswerChanged(input),
+                    validator: (String? input) => this.state.validateCorrectChoiceIndex(input),
                   ),
-                  validator: (String? input) => this.state.validateCorrectChoiceIndex(input),
                 ),
-              ),
-              SizedBox(height: 20),
-              Text("Answers"),
-              SizedBox(height: 10),
-              AddQuestionFormChoicesWidget(
-                  this.state.choicesValue,
-                  this.state.correctChoiceIndex,
-                  this.state.addChoice,
-                  this.state.onChoiceValueChanged,
-                  this.state.deleteChoice,
-                  this.state.onChoiceOrderChanged
-              ),
-              SizedBox(height: 20,),
-              ElevatedButton(
-                child: Text("Create"),
-                onPressed: () => this.state.validateForm(),
-              )
-            ]
+                SizedBox(height: 20),
+                Text("Answers"),
+                SizedBox(height: 10),
+                AddQuestionFormChoicesWidget(
+                    this.state.choicesValue,
+                    this.state.correctChoiceIndex,
+                    this.state.addChoice,
+                    this.state.onChoiceValueChanged,
+                    this.state.deleteChoice,
+                    this.state.onChoiceOrderChanged
+                ),
+                SizedBox(height: 20,),
+                ElevatedButton(
+                  child: Text("Create"),
+                  onPressed: () => this.state.validateForm(allQuizzes),
+                )
+              ]
+          ),
         ),
       ),
     );
