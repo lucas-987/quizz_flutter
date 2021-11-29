@@ -6,4 +6,8 @@ class QuestionManagementItemController extends State<QuestionManagementItemWidge
 
   @override
   Widget build(BuildContext context) => QuestionManagementItemView(this);
+
+  void onTapped() {
+    Navigator.of(context).pushNamed('/management/choices', arguments: widget.question);
+  }
 }

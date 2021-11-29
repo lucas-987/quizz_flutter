@@ -4,7 +4,7 @@ import 'package:quizz/model/question.dart';
 import 'package:quizz/model/quizz.dart';
 import 'package:quizz/views/management/question/question_management_view.dart';
 import 'package:quizz/widgets/management/question/question_management_widget.dart';
-import 'package:quizz/controllers/management/show_change_title_dialog.dart';
+import 'package:quizz/controllers/management/show_change_text_dialog.dart';
 
 class QuestionManagementController extends State<QuestionManagementWidget> {
 

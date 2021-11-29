@@ -24,7 +24,7 @@ class QuizzDatabase {
     final String dbPath = await getDatabasesPath();
     final String path = join(dbPath, filepath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB, onConfigure: _onConfigure);
+    return await openDatabase(path, version: 2, onCreate: _createDB, onConfigure: _onConfigure);
   }
 
   Future _createDB(Database db, int version) async {
@@ -58,6 +58,7 @@ class QuizzDatabase {
         ${ChoiceFields.id} $idType,
         ${ChoiceFields.questionId} $integerType,
         ${ChoiceFields.value} $textType,
+        ${ChoiceFields.order} $integerType,
         FOREIGN KEY (${ChoiceFields.questionId}) REFERENCES $tableQuestion (${QuestionFields.id}) ON DELETE CASCADE ON UPDATE NO ACTION
       )
     ''');
@@ -86,7 +87,8 @@ class QuizzDatabase {
         for(Question question in questions) {
           List<Map<String, Object?>> choicesResult = await db.query(
               tableChoice,
-              where: '${ChoiceFields.questionId} = ${question.id}');
+              where: '${ChoiceFields.questionId} = ${question.id}',
+              orderBy: '${ChoiceFields.order}');
 
           List<Choice> choices = choicesResult.map((jsonChoice) => Choice.fromDbJson(jsonChoice)).toList();
           question.choices = choices;
@@ -181,5 +183,35 @@ class QuizzDatabase {
     );
 
     //TODO update recursively choices ?
+  }
+
+  Future<Choice> createChoice(Choice choice) async {
+    final db = await instance.database;
+
+    final choiceId = await db.insert(tableChoice, choice.toDbJson());
+    choice.id = choiceId;
+
+    return choice;
+  }
+
+  Future<int> deleteChoice(Choice choice) async {
+    final db = await instance.database;
+
+    return await db.delete(
+        tableChoice,
+        where: "${ChoiceFields.id} = ?",
+        whereArgs: [choice.id]
+    );
+  }
+
+  Future<int> updateChoice(Choice choice) async {
+    final db = await instance.database;
+
+    return db.update(
+        tableChoice,
+        choice.toDbJson(),
+        where: "${ChoiceFields.id} = ?",
+        whereArgs: [choice.id]
+    );
   }
 }

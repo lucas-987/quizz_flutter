@@ -13,7 +13,8 @@ class QuestionManagementItemView extends WidgetView<QuestionManagementItemWidget
       child: ListTile(
           title: Center(
               child: Text(this.widget.question.sentence)
-          )
+          ),
+        onTap: () => this.state.onTapped(),
       ),
     );
   }

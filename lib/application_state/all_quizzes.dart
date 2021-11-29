@@ -99,7 +99,37 @@ class AllQuizzes with ChangeNotifier {
     return updatedQuestionId;
   }
 
+  Future<Choice> createChoice(String value, Question question) async {
+    Choice newChoice = Choice(value);
+    newChoice.questionId = question.id;
+    Choice createdChoice = await QuizzDatabase.instance.createChoice(newChoice);
+
+    for(Quizz quizz in this.quizzes) {
+      if(quizz.id == question.quizzId) {
+        for(Question questionIterator in quizz.questions) {
+          if(questionIterator.id == question.id) {
+            question.choices.add(createdChoice);
+          }
+        }
+      }
+    }
+
+    notifyListeners();
+    return createdChoice;
+  }
+
+  Future<int> deleteChoice(Choice choice) async {
+    int deletedChoiceId = await QuizzDatabase.instance.deleteChoice(choice);
+
+    notifyListeners();
+
+    return deletedChoiceId;
+  }
+
   Future<int> updateChoice(Choice choice) async {
-    return -1;
+    int updatedChoiceId = await QuizzDatabase.instance.updateChoice(choice);
+
+    notifyListeners();
+    return updatedChoiceId;
   }
 }
