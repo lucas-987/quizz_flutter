@@ -7,7 +7,10 @@ class GameQuestionWidget extends StatefulWidget {
   int currentQuestionNb;
   int nbQuestions;
 
-  GameQuestionWidget(this.question, this.currentQuestionNb, this.nbQuestions, {Key? key}) : super(key: key);
+  void Function() nextClicked;
+  void Function() showAnswerClicked;
+
+  GameQuestionWidget(this.question, this.currentQuestionNb, this.nbQuestions, this.nextClicked, this.showAnswerClicked, {Key? key}) : super(key: key);
 
   @override
   GameQuestionController createState() => GameQuestionController();

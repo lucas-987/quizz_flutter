@@ -10,41 +10,69 @@ class HomeView extends WidgetView<HomeWidget, HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    ElevatedButton selectQuizzButton = ElevatedButton(
+    TextButton selectQuizzButton = TextButton(
       child: const Text("Select a quizz", textDirection: TextDirection.ltr,),
-      style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 20)),
+      style: TextButton.styleFrom(textStyle: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
       onPressed: () => state.selectQuizzButtonPressed(context),
     );
 
-    ElevatedButton manageQuizzButton = ElevatedButton(
+    TextButton manageQuizzButton = TextButton(
       child: const Text("Manage quizzes", textDirection: TextDirection.ltr,),
-      style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 20)),
+      style: TextButton.styleFrom(textStyle: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
       onPressed: state.manageQuizzesButtonPressed,
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Quizz"),
-      ),
-      body: Container(
-        color: Colors.brown,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment(0.8, 0.0),
+                colors: [
+                  Color.fromRGBO(158, 64, 166, 1),
+                  Color.fromRGBO(252, 64, 80, 1),
+                ],
+                tileMode: TileMode.repeated
+            )
+          ),
+        ),
 
-            children: [
-              Center(
-                  child: selectQuizzButton,
+        Positioned(
+          top: 0.25 * MediaQuery.of(context).size.height,
+          right: 0.125 * MediaQuery.of(context).size.width,
+          child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromRGBO(64, 64, 64, 0.6),
+                        spreadRadius: 10,
+                        blurRadius: 7,
+                        offset: Offset(-3, 5)
+                    )
+                  ]
               ),
-              SizedBox(height: 50),
-              Center(
-                  child: manageQuizzButton
+              width: 0.75 * MediaQuery.of(context).size.width,
+              height: 0.5 * MediaQuery.of(context).size.height,
+              child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+
+                    children: [
+                      Center(
+                        child: selectQuizzButton,
+                      ),
+                      SizedBox(height: 18),
+                      Center(
+                          child: manageQuizzButton
+                      )
+                    ],
+                  )
               )
-            ],
-          )
-        )
-      )
+          ),
+        ),
+      ],
     );
   }
 

@@ -21,6 +21,12 @@ class AddQuestionFormChoicesView extends WidgetView<AddQuestionFormChoicesWidget
                 key: Key("$i"),
                 background: Container(color: Colors.red),
                 child: ListTile(
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.dehaze)
+                    ],
+                  ),
                   contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   title: TextFormField(
                     controller: TextTools.newTextEditingController(this.widget.choices[i]),
