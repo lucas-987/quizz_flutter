@@ -27,6 +27,20 @@ class AllQuizzes with ChangeNotifier {
     return newQuizz;
   }
 
+  Future<void> loadQuizzes(List<Quizz> quizzsList, String url) async {
+    await QuizzDatabase.instance.deleteAllQuizzByUrl(url);
+
+    for(Quizz quizz in quizzsList) {
+      await QuizzDatabase.instance.createQuizz(quizz);
+    }
+
+    List<Quizz> updatedQuizzes = await QuizzDatabase.instance.getAllQuizzes();
+    quizzes.clear();
+    quizzes.addAll(updatedQuizzes);
+
+    notifyListeners();
+  }
+
   Future<int> deleteQuizz(Quizz quizz) async {
     int deletedQuizzId = await QuizzDatabase.instance.deleteQuizz(quizz);
     for(int i=0; i<quizzes.length; i++) {

@@ -1,3 +1,5 @@
+import 'package:xml/xml.dart';
+
 import 'choice.dart';
 
 final String tableQuestion = "questions";
@@ -45,5 +47,46 @@ class Question {
       QuestionFields.answer : answer,
       QuestionFields.order : order
     };
+  }
+
+  static Question fromXml(XmlElement questionXml) {
+
+    XmlElement? propositionsXml = questionXml.getElement("Propositions");
+    if(propositionsXml == null) {
+      throw FormatException();
+    }
+    Iterable<XmlElement> choicesXml = propositionsXml.findElements("Proposition");
+    List<Choice> choices = [];
+
+    for(XmlElement choiceXml in choicesXml) {
+      Choice choice = Choice.fromXml(choiceXml);
+      choices.add(choice);
+    }
+
+    XmlElement? responseXml = questionXml.getElement("Reponse");
+    String? responseNumberString = responseXml?.getAttribute("valeur");
+    if(responseNumberString == null) {
+      throw FormatException();
+    }
+    int responseNumber;
+    try{
+      responseNumber = int.parse(responseNumberString);
+    } on FormatException catch(e) {
+      throw FormatException();
+    }
+
+    if(responseNumber > choices.length){
+      throw FormatException();
+    }
+
+    String answer = choices[responseNumber - 1].value;
+
+    String sentence = questionXml.innerText;
+    sentence = sentence.replaceAll(RegExp(r'(\n)+'), "§§separator§§");
+    sentence = sentence.replaceAll(RegExp(r'(\t)+'), "");
+    List<String> sentenceSplitted = sentence.split("§§separator§§");
+    sentence = sentenceSplitted[1];
+
+    return  Question(sentence, choices, answer);
   }
 }

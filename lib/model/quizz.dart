@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:quizz/model/question.dart';
+import 'package:xml/xml.dart';
 
 final String tableQuizz = "quizzs";
 
@@ -40,5 +41,25 @@ class Quizz {
       QuizzFields.title : title,
       QuizzFields.url : url
     };
+  }
+
+  static Quizz fromXml(XmlElement quizzXml, String? url) {
+    String? title = quizzXml.getAttribute("type");
+
+    Iterable<XmlElement> questionsXml = quizzXml.findElements("Question");
+    List<Question> questions = [];
+
+    for(XmlElement questionXml in questionsXml) {
+      Question question;
+      try{
+        question = Question.fromXml(questionXml);
+      } on FormatException catch(e) {
+        rethrow;
+      }
+      questions.add(question);
+    }
+
+    Quizz quizz = Quizz.WithUrlAndQuestions(title, url, questions);
+    return quizz;
   }
 }

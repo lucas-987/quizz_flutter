@@ -1,3 +1,5 @@
+import 'package:xml/xml.dart';
+
 final String tableChoice = "choices";
 
 class ChoiceFields {
@@ -38,5 +40,12 @@ class Choice {
       ChoiceFields.value: value,
       ChoiceFields.order: order
     };
+  }
+
+  static Choice fromXml(XmlElement xml) {
+    String value = xml.innerText;
+    value = value.replaceAllMapped(RegExp(r'(\n|\t)'), (match) => "");
+    Choice choice = Choice(value);
+    return choice;
   }
 }

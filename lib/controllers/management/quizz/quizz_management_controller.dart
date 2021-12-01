@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:quizz/application_state/all_quizzes.dart';
 import 'package:quizz/controllers/management/quizz/show_add_quizz_dialog.dart';
+import 'package:quizz/model/choice.dart';
+import 'package:quizz/model/question.dart';
 import 'package:quizz/model/quizz.dart';
 import 'package:quizz/tools/Tuple.dart';
 import 'package:quizz/views/management/quizz/quizz_management_view.dart';
 import 'package:quizz/widgets/management/quizz/quizz_management_widget.dart';
+import 'package:http/http.dart' as http;
+import 'package:xml/xml.dart';
 
 class QuizzManagementController extends State<QuizzManagementWidget> {
   
@@ -50,10 +56,61 @@ class QuizzManagementController extends State<QuizzManagementWidget> {
         createdQuizz = await allQuizzes.createQuizz(result.item2!);
       }
       else if(result.item1 == "load") {
-        // createQuizz =
+        downloadQuizz(allQuizzes, result.item2!);
       }
 
       if(createdQuizz != null) Navigator.of(context).pushNamed("/management/questions", arguments: createdQuizz);
     });
+  }
+
+  void downloadQuizz(AllQuizzes allQuizzes, String url) async {
+    http.Response response;
+    try{
+      response = await http.get(Uri.parse(url));
+    } on HttpException catch(e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to load quizz from url"))
+      );
+      return;
+    }
+
+
+    if(response.statusCode == 200) {
+      var content = response.body;
+
+      final document = XmlDocument.parse(content);
+
+      Iterable<XmlElement> quizzsXml = document.findAllElements("Quizz");
+
+      if(quizzsXml.length == 0){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to load quizz from url : unvalid content"))
+          );
+          return;
+      }
+
+      List<Quizz> quizzs = [];
+
+      for(XmlElement quizzXml in quizzsXml) {
+        Quizz quizz;
+        try{
+          quizz = Quizz.fromXml(quizzXml, url);
+        } on FormatException catch(e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Failed to load quizz from url : unvalid content"))
+          );
+          return;
+        }
+
+        quizzs.add(quizz);
+      }
+
+      allQuizzes.loadQuizzes(quizzs, url);
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to load quizz from url"))
+      );
+    }
   }
 }

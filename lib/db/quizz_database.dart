@@ -133,6 +133,16 @@ class QuizzDatabase {
     );
   }
 
+  Future<int> deleteAllQuizzByUrl(String url) async {
+    final db = await instance.database;
+
+    return await db.delete(
+      tableQuizz,
+      where: "${QuizzFields.url} = ?",
+      whereArgs: [url]
+    );
+  }
+
   Future<int> updateQuizz(Quizz quizz) async {
     final db = await instance.database;
 

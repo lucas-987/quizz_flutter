@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:quizz/application_state/all_quizzes.dart';
 import 'package:quizz/controllers/management/quizz/quizz_management_controller.dart';
-import 'package:quizz/model/quizz.dart';
 import 'package:quizz/views/widget_view.dart';
 import 'package:quizz/widgets/management/quizz/quizz_management_item_widget.dart';
 import 'package:quizz/widgets/management/quizz/quizz_management_widget.dart';
