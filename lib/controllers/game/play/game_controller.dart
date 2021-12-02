@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizz/controllers/game/play/show_answer_dialog.dart';
+import 'package:quizz/tools/Tuple.dart';
 import 'package:quizz/views/game/play/game_view.dart';
 import 'package:quizz/widgets/game/play/game_widget.dart';
 
@@ -8,6 +9,7 @@ class GameController extends State<GameWidget> {
   int currentQuestionIndex = 0;
   int score = 0;
   bool answerViewed = false;
+  Map<int, Tuple<String, bool>?> userAnswers = {};
 
   @override
   Widget build(BuildContext context) => GameView(this);
@@ -20,7 +22,7 @@ class GameController extends State<GameWidget> {
       });
     }
     else {
-      Navigator.of(context).pushNamed("/game/score", arguments: score);
+      Navigator.of(context).pushNamed("/game/score", arguments: [score, userAnswers, widget.quizz.questions.length]);
     }
   }
 
@@ -49,7 +51,10 @@ class GameController extends State<GameWidget> {
       return;
     }
 
-    if(anwser == widget.quizz.questions[currentQuestionIndex].answer) {
+    bool rightAnswer = anwser == widget.quizz.questions[currentQuestionIndex].answer;
+    userAnswers[currentQuestionIndex] = Tuple(anwser, rightAnswer);
+
+    if(rightAnswer) {
       setState(() {
         score++;
       });

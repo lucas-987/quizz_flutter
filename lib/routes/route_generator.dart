@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizz/model/question.dart';
 import 'package:quizz/model/quizz.dart';
+import 'package:quizz/tools/Tuple.dart';
 import 'package:quizz/widgets/game/play/game_score_widget.dart';
 import 'package:quizz/widgets/game/play/game_widget.dart';
 import 'package:quizz/widgets/game/select/game_select_quizz_widget.dart';
@@ -33,6 +34,13 @@ class RouteGenerator {
         if(args != null && args.runtimeType == int) {
           return MaterialPageRoute(builder: (_) => GameScoreWidget(args as int));
         }
+        if(args != null && args is List && (args as List).length == 3) {
+          if(args[0].runtimeType == int && args[1] is Map<int, Tuple<String, bool>?> && args[2].runtimeType == int) {
+            return MaterialPageRoute(builder: (_) => GameScoreWidget(args[0], userAnswers: args[1], nbQuestions: args[2],));
+          }
+        }
+
+        bool argsLengthOk = (args as List).length == 2;
 
         return _errorRoute();
 

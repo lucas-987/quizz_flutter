@@ -4,7 +4,52 @@ import 'package:quizz/views/widget_view.dart';
 import 'package:quizz/widgets/game/play/game_score_widget.dart';
 
 class GameScoreView extends WidgetView<GameScoreWidget, GameScoreController> {
-  const GameScoreView(GameScoreController state, {Key? key}) : super(state, key: key);
+  GameScoreView(GameScoreController state, {Key? key}) : super(state, key: key);
+
+  Widget detail() {
+    // TODO make a custom widget out of this function
+    return Expanded(
+      child: ListView(
+        children: [
+          for(int i=0; i< widget.nbQuestions; i++)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Question ${i}:",
+                    style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black
+                    ),
+                  ),
+                  const SizedBox(width: 10,),
+                  Flexible(
+                    fit: FlexFit.loose,
+                      child: Text(
+                        widget.userAnswers != null ? widget.userAnswers![i]?.item1 ?? " - " : " - ",
+                        style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black
+                        ),
+                        textAlign: TextAlign.left,
+                        //overflow: TextOverflow.ellipsis,
+                    )
+                  ),
+                  const SizedBox(width: 10,),
+                  Icon(
+                    (widget.userAnswers != null && widget.userAnswers![i] != null && widget.userAnswers![i]!.item2) ? Icons.check : Icons.clear,
+                    color: (widget.userAnswers != null && widget.userAnswers![i] != null && widget.userAnswers![i]!.item2) ? Colors.green : Colors.red,
+                  )
+                ],
+              ),
+            )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +77,11 @@ class GameScoreView extends WidgetView<GameScoreWidget, GameScoreController> {
           ),
 
           Positioned(
-            left: 0.125 * MediaQuery.of(context).size.width,
-            top: 0.3 * MediaQuery.of(context).size.height,
+            left: ((this.widget.userAnswers == null || widget.nbQuestions < 1) ? 0.125 : 0.05) * MediaQuery.of(context).size.width,
+            top: ((this.widget.userAnswers == null || widget.nbQuestions < 1) ? 0.3 : 0.2) * MediaQuery.of(context).size.height,
             child: Container(
-              height: 0.4 * MediaQuery.of(context).size.height,
-              width: 0.75 * MediaQuery.of(context).size.width,
+              height: ((this.widget.userAnswers == null || widget.nbQuestions < 1) ? 0.4 : 0.6) * MediaQuery.of(context).size.height,
+              width: ((this.widget.userAnswers == null || widget.nbQuestions < 1) ? 0.75 : 0.9) * MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 255, 255, 1),
                   boxShadow: [
@@ -61,7 +106,7 @@ class GameScoreView extends WidgetView<GameScoreWidget, GameScoreController> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Text(
                       this.widget.score.toString(),
                       style: const TextStyle(
@@ -69,16 +114,15 @@ class GameScoreView extends WidgetView<GameScoreWidget, GameScoreController> {
                           fontSize: 50
                       ),
                     ),
-                    SizedBox(height: 20),
+                    (this.widget.userAnswers == null || widget.nbQuestions < 1) ? Text("hahahahaha") : detail(),//SizedBox.shrink(),
+                    const SizedBox(height: 20),
                     TextButton(
                         onPressed: () => this.state.goToHome(),
-                        child: const Text(
-                            "Home",
-                            style: TextStyle(
-                                fontSize: 40
-                            )
+                        child: const Icon(
+                          Icons.home,
+                          size: 40,
                         )
-                    )
+                    ),
                   ],
                 ),
               ),
