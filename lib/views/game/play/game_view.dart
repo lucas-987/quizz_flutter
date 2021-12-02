@@ -31,13 +31,13 @@ class GameView extends WidgetView<GameWidget, GameController> {
               this.state.nextButtonClicked,
               this.state.showAnwserButtonClicked
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             GameChoiceWidget(
               this.widget.quizz.questions[this.state.currentQuestionIndex],
               this.state.checkAnwser,
               heightPercent: 0.05,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         )
       ),
