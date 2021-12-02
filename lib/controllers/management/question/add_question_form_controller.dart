@@ -25,7 +25,7 @@ class AddQuestionFormController extends State<AddQuestionFormWidget> {
       Question newQuestion = Question.WithOrder(
           questionSentence!,
           choices,
-          choicesValue[correctChoiceIndex]!,
+          choicesValue[correctChoiceIndex - 1]!,
           widget.quizz.questions.length
       );
 
@@ -55,7 +55,7 @@ class AddQuestionFormController extends State<AddQuestionFormWidget> {
 
     try {
       int inputInt = int.parse(input);
-      if(inputInt >= choicesValue.length || inputInt < 0) return "Unvalid value";
+      if(inputInt > choicesValue.length || inputInt < 0) return "Unvalid value";
     } on FormatException catch(exception) {
       return "Incorrect format";
     }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -76,7 +77,7 @@ class QuizzManagementController extends State<QuizzManagementWidget> {
 
 
     if(response.statusCode == 200) {
-      var content = response.body;
+      var content = Utf8Decoder().convert(response.bodyBytes);
 
       final document = XmlDocument.parse(content);
 
