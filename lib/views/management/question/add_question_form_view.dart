@@ -61,7 +61,8 @@ class AddQuestionFormView extends WidgetView<AddQuestionFormWidget, AddQuestionF
                     this.state.addChoice,
                     this.state.onChoiceValueChanged,
                     this.state.deleteChoice,
-                    this.state.onChoiceOrderChanged
+                    this.state.onChoiceOrderChanged,
+                    this.state.updateCorrectChoiceIndex
                 ),
                 SizedBox(height: 20,),
                 ElevatedButton(

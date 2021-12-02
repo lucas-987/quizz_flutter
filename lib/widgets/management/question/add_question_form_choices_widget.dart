@@ -10,9 +10,10 @@ class AddQuestionFormChoicesWidget extends StatefulWidget {
   final void Function(int index, String? value) onChoiceValueChanged;
   final void Function(int index) onChoiceDismissed;
   final void Function(int oldIndex, int newIndex) onChoiceOrderChanged;
+  final void Function(int newIndex) onSelectedAnswerChanged;
 
   AddQuestionFormChoicesWidget(this.choices, this.selectedIndex,
-      this.onChoiceAdded, this.onChoiceValueChanged, this.onChoiceDismissed, this.onChoiceOrderChanged, {Key? key}) : super(key: key);
+      this.onChoiceAdded, this.onChoiceValueChanged, this.onChoiceDismissed, this.onChoiceOrderChanged, this.onSelectedAnswerChanged, {Key? key}) : super(key: key);
 
   @override
   AddQuestionFormChoicesController createState() => AddQuestionFormChoicesController();

@@ -15,35 +15,47 @@ class AddQuestionFormChoicesView extends WidgetView<AddQuestionFormChoicesWidget
       children: [
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.4,
-          child: ReorderableListView(
-            children: [
-              for(var i=0; i<this.widget.choices.length; i++) Dismissible(
-                key: Key("$i"),
-                background: Container(color: Colors.red),
-                child: ListTile(
-                  leading: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.dehaze)
-                    ],
-                  ),
-                  contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  title: TextFormField(
-                    controller: TextTools.newTextEditingController(this.widget.choices[i]),
-                    decoration: InputDecoration(
-                        hintText: "Answer ${i+1}",
-                        labelText: "Answer ${i+1}"
+          child: Expanded(
+            child: ReorderableListView(
+              children: [
+                for(var i=0; i<this.widget.choices.length; i++) Dismissible(
+                  key: UniqueKey(),
+                  background: Container(color: Colors.red),
+                  child: ListTile(
+                    leading: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.dehaze)
+                      ],
                     ),
-                    onChanged: (value) => widget.onChoiceValueChanged(i, value),
-                    validator: (value) => this.state.validateChoice(value),
+                    contentPadding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    title: GestureDetector(
+                      child: TextFormField(
+                        controller: TextTools.newTextEditingController(this.widget.choices[i]),
+                        decoration: InputDecoration(
+                            hintText: "Answer ${i+1}",
+                            labelText: "Answer ${i+1}"
+                        ),
+                        enabled: false,
+                        validator: (value) => this.state.validateChoice(value),
+                      ),
+                      onTap: () => this.state.onChoiceClicked(i),
+                    ),
+                    trailing: Checkbox(
+                      value: widget.selectedIndex-1 == i,
+                      onChanged: (value) {
+                        if(widget.selectedIndex-1 != i)
+                          this.widget.onSelectedAnswerChanged(i);
+                      },
+                    ),
                   ),
+                  onDismissed: (direction) => widget.onChoiceDismissed(i),
                 ),
-                onDismissed: (direction) => widget.onChoiceDismissed(i),
-              ),
-            ],
+              ],
 
-            onReorder: (oldIndex, newIndex) => this.widget.onChoiceOrderChanged(oldIndex, newIndex),
-          ),
+              onReorder: (oldIndex, newIndex) => this.widget.onChoiceOrderChanged(oldIndex, newIndex),
+            ),
+          )
         ),
         SizedBox(height: 20,),
         ElevatedButton(

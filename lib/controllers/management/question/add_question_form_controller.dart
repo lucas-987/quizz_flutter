@@ -113,8 +113,20 @@ class AddQuestionFormController extends State<AddQuestionFormWidget> {
         choicesValue.removeAt(oldIndex);
         choicesValue.insert(newIndex, value);
 
-        if(correctChoiceIndex - 1 == oldIndex) correctChoiceIndex = newIndex + 1;
-        else if (newIndex < correctChoiceIndex - 1 && oldIndex > correctChoiceIndex -1) correctChoiceIndex++;
+        if(correctChoiceIndex - 1 == oldIndex)
+          correctChoiceIndex = newIndex + 1;
+        else if (newIndex < correctChoiceIndex - 1 && oldIndex > correctChoiceIndex -1) // if a choice on top of the selected one is placed below it
+          correctChoiceIndex++;
+        else if (oldIndex < correctChoiceIndex -1 && newIndex > correctChoiceIndex -1) // if a choice below the selected one is place on top of it
+          correctChoiceIndex--;
+      });
+    }
+  }
+
+  void updateCorrectChoiceIndex(int newIndex) {
+    if(newIndex >= 0 && newIndex < choicesValue.length) {
+      setState(() {
+        correctChoiceIndex = newIndex + 1;
       });
     }
   }
