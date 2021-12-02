@@ -45,10 +45,10 @@ class GameController extends State<GameWidget> {
     });
   }
 
-  void checkAnwser(String anwser) { // TODO eventuellement, representer une reponse par un objet
+  bool? checkAnwser(String anwser) { // TODO eventuellement, representer une reponse par un objet
     if(answerViewed) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You have seen the answer !"), duration: const Duration(milliseconds: 1000)));
-      return;
+      return null;
     }
 
     bool rightAnswer = anwser == widget.quizz.questions[currentQuestionIndex].answer;
@@ -60,6 +60,6 @@ class GameController extends State<GameWidget> {
       });
     }
 
-    nextButtonClicked();
+    return rightAnswer;
   }
 }

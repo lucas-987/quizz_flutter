@@ -22,13 +22,13 @@ class GameChoiceView extends WidgetView<GameChoiceWidget, GameChoiceController> 
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
           children: [
-            for(Choice choice in this.widget.question.choices)
+            for(int i=0; i < this.widget.question.choices.length; i++)
               GestureDetector(
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(252, 174, 63, 1),
+                  decoration:  BoxDecoration(
+                    color: i == state.rightChoiceIndex ? Colors.lightGreen : (i == state.wrongChoiceIndex ? Colors.red : Color.fromRGBO(252, 174, 63, 1)),
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                           color: Color.fromRGBO(92, 92, 92, 0.8),
                           spreadRadius: 1,
@@ -39,7 +39,7 @@ class GameChoiceView extends WidgetView<GameChoiceWidget, GameChoiceController> 
                   ),
                   child: Center(
                     child: Text(
-                      choice.value,
+                      widget.question.choices[i].value,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 16,
@@ -48,7 +48,10 @@ class GameChoiceView extends WidgetView<GameChoiceWidget, GameChoiceController> 
                     ),
                   ),
                 ),
-                onTap: () => this.widget.onClicked(choice.value),
+                onTap: () {
+                  if(!state.clickDisabled)
+                    state.onChoiceSubmitt(i);
+                },
               )
           ],
         ),

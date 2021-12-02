@@ -35,6 +35,7 @@ class GameView extends WidgetView<GameWidget, GameController> {
             GameChoiceWidget(
               this.widget.quizz.questions[this.state.currentQuestionIndex],
               this.state.checkAnwser,
+              this.state.nextButtonClicked,
               heightPercent: 0.05,
             ),
             const SizedBox(height: 20),
